@@ -27,11 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('senha') ? document.getElementById('senha').value : document.getElementById('password').value;
       try {
-        const res = await fetch('/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
-        });
+      const res = await fetch('http://localhost:3000/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email, password })
+});
+
         const data = await res.json();
         if (!res.ok) {
           showMessage(loginMessageEl, data.error || 'Falha no login', true);
