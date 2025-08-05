@@ -1,13 +1,10 @@
-const { createUser, listUsers } = require('../services/usersService');
+const users = [];
 
-function createUserController(req, res) {
-  const user = createUser(req.body);
+function createUser(req, res) {
+  const { name, email, phone, password } = req.body;
+  const user = { name, email, phone, password };
+  users.push(user);
   res.status(201).json(user);
 }
 
-function listUsersController(req, res) {
-  const users = listUsers();
-  res.status(200).json(users);
-}
-
-module.exports = { createUser: createUserController, listUsers: listUsersController };
+module.exports = { createUser };
