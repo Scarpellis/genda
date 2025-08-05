@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = require('./src/config/app');
 
-const frontendPath = path.join(__dirname, 'frontend');
+const frontendPath = path.join(__dirname, '../frontend');
 app.use(express.static(frontendPath));
 
 if (!process.env.JWT_SECRET) {
