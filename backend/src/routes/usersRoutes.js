@@ -2,6 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const { createUser, getUsers } = require('../controllers/usersController');
+const authMiddleware = require('../authMiddleware');
 
 const validateUser = [
   body('name').notEmpty().withMessage('Name is required'),
@@ -20,6 +21,6 @@ const validateUser = [
 ];
 
 router.post('/', validateUser, createUser);
-router.get('/', getUsers);
+router.get('/', authMiddleware, getUsers);
 
 module.exports = router;
