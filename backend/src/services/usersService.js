@@ -51,4 +51,28 @@ function getUsers() {
 function findUserByEmail(email) {
   return users.find((u) => u.email === email);
 }
-module.exports = { createUser, getUsers, findUserByEmail };
+async function updateUser(email, { name, phone, password }) {
+  const user = findUserByEmail(email);
+  if (!user) {
+    return null;
+  }
+
+  if (name !== undefined) {
+    user.name = name;
+  }
+
+  if (phone !== undefined) {
+    user.phone = phone;
+  }
+
+  if (password !== undefined) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+  }
+
+  await saveUsers();
+  const { password: _, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+}
+
+module.exports = { createUser, getUsers, findUserByEmail, updateUser };
