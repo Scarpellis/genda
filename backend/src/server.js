@@ -6,6 +6,8 @@ app.use(express.json());
 
 const usersRouter = require('./routes/usersRoutes');
 app.use('/users', usersRouter);
+const authRouter = require('./routes/authRoutes');
+app.use(authRouter);
 
 app.get('/', (req, res) => {
   res.send('API do Genda funcionando!');
