@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário - Sistema de Agendamentos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">📅 AgendaFácil</h1>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Início</a>
+                <a href="calendar.html" class="nav-link active">Calendário</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Header com estatísticas -->
+            <div class="dashboard-header">
+                <div>
+                    <h1>Sistema de Agendamentos</h1>
+                    <p>Gerencie seus agendamentos de forma eficiente</p>
+                </div>
+            </div>
+
+            <!-- Cards de estatísticas -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-card-content">
+                        <div class="stat-info">
+                            <span class="stat-title">Hoje</span>
+                            <span class="stat-value" id="todayCount">0</span>
+                            <span class="stat-subtitle">agendamentos</span>
+                        </div>
+                        <i class="fas fa-calendar-day stat-card-icon"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-content">
+                        <div class="stat-info">
+                            <span class="stat-title">Confirmados</span>
+                            <span class="stat-value confirmed" id="confirmedCount">0</span>
+                            <span class="stat-subtitle">este mês</span>
+                        </div>
+                        <i class="fas fa-check-circle stat-card-icon"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-content">
+                        <div class="stat-info">
+                            <span class="stat-title">Pendentes</span>
+                            <span class="stat-value pending" id="pendingCount">0</span>
+                            <span class="stat-subtitle">aguardando</span>
+                        </div>
+                        <i class="fas fa-clock stat-card-icon"></i>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-card-content">
+                        <div class="stat-info">
+                            <span class="stat-title">Total</span>
+                            <span class="stat-value" id="totalCount">0</span>
+                            <span class="stat-subtitle">cadastrados</span>
+                        </div>
+                        <i class="fas fa-chart-line stat-card-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid principal com calendário e agendamentos -->
+            <div class="calendar-grid">
+                <!-- Calendário -->
+                <div class="calendar-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Calendário de Agendamentos</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="calendar-nav">
+                                <button id="prevMonth" class="btn btn-ghost">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <h3 id="currentMonth"></h3>
+                                <button id="nextMonth" class="btn btn-ghost">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar" id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de agendamentos do dia -->
+                <div class="appointments-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 id="selectedDateTitle">Hoje</h3>
+                            <button class="btn btn-primary" id="addAppointmentBtn">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div class="card-content">
+                            <div class="appointments-list" id="appointmentsList">
+                                <p class="no-appointments">Nenhum agendamento para este dia</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de agendamento -->
+    <div class="modal" id="appointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Novo Agendamento</h3>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="appointmentForm" class="modal-body">
+                <div class="form-group">
+                    <label>Data selecionada:</label>
+                    <p id="selectedDateDisplay" class="selected-date"></p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="time">Horário *</label>
+                        <select id="time" required>
+                            <option value="">Selecione o horário</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="pending">Pendente</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="service">Serviço *</label>
+                    <select id="service" required>
+                        <option value="">Selecione o serviço</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="client">Cliente *</label>
+                    <input type="text" id="client" placeholder="Nome do cliente" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" id="email" placeholder="cliente@email.com">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Observações</label>
+                    <textarea id="notes" placeholder="Observações adicionais..." rows="3"></textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Agendar</button>
+                    <button type="button" class="btn btn-ghost" id="cancelForm">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
