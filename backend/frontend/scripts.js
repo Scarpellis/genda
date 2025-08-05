@@ -1,5 +1,3 @@
-// Frontend interactions for login, registration and user listing
-
 document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.getElementById('loginForm');
   const registerForm = document.getElementById('registerForm');
@@ -9,10 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipoSelect = document.getElementById('tipoUsuario');
   const infoDiv = document.getElementById('infoTipo');
 
-  // URL base do backend
   const API_BASE_URL = 'http://localhost:3000';
 
-  // Atualiza a mensagem do tipo de usuário (prestador ou contratante)
+  // Atualiza a mensagem do tipo de usuário
   if (tipoSelect && infoDiv) {
     const updateInfo = () => {
       if (tipoSelect.value === 'prestador') {
@@ -30,7 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value;
-      const password = document.getElementById('senha') ? document.getElementById('senha').value : document.getElementById('password').value;
+      const password = document.getElementById('senha') 
+        ? document.getElementById('senha').value 
+        : document.getElementById('password').value;
 
       try {
         const res = await fetch(`${API_BASE_URL}/login`, {
@@ -39,7 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ email, password })
         });
 
-        // Verifica se a resposta veio corretamente
         const data = await res.json();
         if (!res.ok) {
           showMessage(loginMessageEl, data.error || 'Falha no login', true);
@@ -50,9 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showMessage(loginMessageEl, 'Login realizado com sucesso!');
         await loadUsers();
       } catch (err) {
-        // Loga o erro real no console
         console.error('Erro na requisição de login:', err);
-        showMessage(loginMessageEl, 'Erro de conexão', true);
+        showMessage(loginMessageEl, 'Erro de conexão com o servidor (login)', true);
       }
     });
   }
@@ -83,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.reset();
       } catch (err) {
         console.error('Erro na requisição de cadastro:', err);
-        showMessage(registerMessageEl, 'Erro de conexão', true);
+        showMessage(registerMessageEl, 'Erro de conexão com o servidor (cadastro)', true);
       }
     });
   }
@@ -119,11 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
       usersList.appendChild(ul);
     } catch (err) {
       console.error('Erro ao carregar usuários:', err);
-      usersList.innerHTML = '<p>Erro de conexão</p>';
+      usersList.innerHTML = '<p>Erro de conexão com o servidor (listagem)</p>';
     }
   }
 
-  // Função utilitária para mostrar mensagens
+  // Função para mostrar mensagens
   function showMessage(element, msg, isError = false) {
     if (!element) return;
     element.textContent = msg;
