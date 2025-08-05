@@ -56,6 +56,9 @@ const sampleAppointments = [
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
+    // Só executa se os elementos do calendário estiverem presentes
+    if (!document.getElementById('calendar')) return;
+
     loadAppointments();
     initializeCalendar();
     initializeForm();
