@@ -87,33 +87,11 @@
             <button type="submit">Entrar</button>
         </form>
         <div class="type-info" id="infoTipo"></div>
+        <div id="loginMessage"></div>
+        <div id="usersList"></div>
     </div>
 
-    <script>
-        const tipoSelect = document.getElementById("tipoUsuario");
-        const infoDiv = document.getElementById("infoTipo");
-
-        tipoSelect.addEventListener("change", () => {
-            if (tipoSelect.value === "prestador") {
-                infoDiv.textContent = "Você está entrando como Prestador de Serviço.";
-            } else {
-                infoDiv.textContent = "Você está entrando como Contratante.";
-            }
-        });
-
-        document.getElementById("loginForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-
-            const tipo = tipoSelect.value;
-            const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
-
-            // Aqui você enviaria os dados para o backend
-            console.log({ tipo, email, senha });
-
-            alert(`Login como ${tipo} realizado com sucesso!`);
-        });
-    </script>
+    <script src="scripts.js"></script>
 
 </body>
 </html>
