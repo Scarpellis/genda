@@ -20,7 +20,6 @@ async function loadUsers() {
 async function saveUsers() {
   try {
     await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-    await loadUsers();
   } catch (error) {
     console.error('Failed to save users:', error);
     throw error;

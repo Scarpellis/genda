@@ -4,36 +4,27 @@ const router = express.Router();
 const { createUser, getUsers, updateUser, deleteUser } = require('../controllers/usersController');
 const authMiddleware = require('../middleware/authMiddleware');
 
+function handleValidationErrors(req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next();
+}
+
 const validateUser = [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Valid email is required'),
   body('phone').notEmpty().withMessage('Phone is required'),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters'),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  handleValidationErrors,
 ];
 
 const validateUpdateUser = [
   body('name').optional().notEmpty().withMessage('Name cannot be empty'),
   body('phone').optional().notEmpty().withMessage('Phone cannot be empty'),
-  body('password')
-    .optional()
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters'),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }
+  body('password').optional().isLength({ min: 6 }).withMessage('Password must be at least 6 characters'),
+  handleValidationErrors,
 ];
 
 router.post('/', validateUser, createUser);
