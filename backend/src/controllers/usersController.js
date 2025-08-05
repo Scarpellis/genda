@@ -7,4 +7,8 @@ function createUser(req, res) {
   res.status(201).json(user);
 }
 
-module.exports = { createUser };
+function getUsers(req, res) {
+  res.json(users);
+}
+
+module.exports = { createUser, getUsers };
