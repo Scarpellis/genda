@@ -75,4 +75,14 @@ async function updateUser(email, { name, phone, password }) {
   return userWithoutPassword;
 }
 
-module.exports = { createUser, getUsers, findUserByEmail, updateUser };
+async function deleteUser(email) {
+  const index = users.findIndex((u) => u.email === email);
+  if (index === -1) {
+    return false;
+  }
+  users.splice(index, 1);
+  await saveUsers();
+  return true;
+}
+
+module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser };
