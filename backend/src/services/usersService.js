@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const bcrypt = require('bcrypt');
 
 const USERS_FILE = path.join(__dirname, '..', 'users.json');
 
@@ -28,14 +29,19 @@ async function saveUsers() {
 loadUsers();
 
 async function createUser({ name, email, phone, password }) {
-  const user = { name, email, phone, password };
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = { name, email, phone, password: hashedPassword };
   users.push(user);
   await saveUsers();
-  return user;
+  const { password: _, ...userWithoutPassword } = user;
+  return userWithoutPassword;
 }
 
 function getUsers() {
-  return users;
+  return users.map(({ password, ...user }) => user);
 }
 
-module.exports = { createUser, getUsers };
+function findUserByEmail(email) {
+  return users.find((u) => u.email === email);
+}
+module.exports = { createUser, getUsers, findUserByEmail };
