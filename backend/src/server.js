@@ -5,7 +5,9 @@ require('dotenv').config();
 app.use(express.json());
 
 const usersRouter = require('./routes/usersRoutes');
+const { login } = require('./controllers/usersController');
 app.use('/users', usersRouter);
+app.post('/login', login);
 
 app.get('/', (req, res) => {
   res.send('API do Genda funcionando!');
