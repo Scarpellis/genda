@@ -1,5 +1,10 @@
 require('dotenv').config();
+const express = require('express');
+const path = require('path');
 const app = require('./src/config/app');
+
+const frontendPath = path.join(__dirname, 'frontend');
+app.use(express.static(frontendPath));
 
 if (!process.env.JWT_SECRET) {
   console.error('JWT_SECRET is not defined.');

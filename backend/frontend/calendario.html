@@ -20,6 +20,17 @@
 
     <main class="main-content">
         <div class="container">
+            <section class="user-register">
+                <h2>Cadastro de Usuário</h2>
+                <form id="registerForm">
+                    <input type="text" id="regName" name="name" placeholder="Nome" required>
+                    <input type="email" id="regEmail" name="email" placeholder="E-mail" required>
+                    <input type="tel" id="regPhone" name="phone" placeholder="Telefone" required>
+                    <input type="password" id="regPassword" name="password" placeholder="Senha" required>
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </form>
+                <div id="registerMessage"></div>
+            </section>
             <!-- Header com estatísticas -->
             <div class="dashboard-header">
                 <div>
@@ -186,7 +197,7 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="scripts.js"></script>
 </body>
 </html>
 
