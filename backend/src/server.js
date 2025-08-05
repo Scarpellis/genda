@@ -2,6 +2,11 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not defined.');
+  process.exit(1);
+}
+
 app.use(express.json());
 
 const usersRouter = require('./routes/usersRoutes');
