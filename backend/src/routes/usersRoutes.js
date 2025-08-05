@@ -2,7 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const router = express.Router();
 const { createUser, getUsers } = require('../controllers/usersController');
-const authMiddleware = require('../authMiddleware');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const validateUser = [
   body('name').notEmpty().withMessage('Name is required'),
