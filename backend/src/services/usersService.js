@@ -29,6 +29,12 @@ async function saveUsers() {
 loadUsers();
 
 async function createUser({ name, email, phone, password }) {
+  const existingUser = findUserByEmail(email);
+  if (existingUser) {
+    const error = new Error('E-mail já cadastrado');
+    error.status = 409;
+    throw error;
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { name, email, phone, password: hashedPassword };
   users.push(user);

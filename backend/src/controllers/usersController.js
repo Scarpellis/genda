@@ -6,7 +6,11 @@ async function createUser(req, res) {
     const user = await usersService.createUser({ name, email, phone, password });
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error: 'Could not save user' });
+    if (error.status) {
+      res.status(error.status).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'Could not save user' });
+    }
   }
 }
 
