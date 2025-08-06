@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = require('./src/config/app');
 const { loadUsers } = require('./src/services/usersService');
+const { loadAppointments } = require('./src/services/appointmentsService');
 
 const frontendPath = path.resolve(__dirname, '../frontend');
 app.use(express.static(frontendPath));
@@ -18,6 +19,7 @@ if (!process.env.JWT_SECRET) {
 
 async function startServer() {
   await loadUsers();
+  await loadAppointments();
   const PORT = process.env.PORT || 3000;
   app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
