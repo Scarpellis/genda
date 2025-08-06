@@ -4,7 +4,7 @@ const usersService = require('../services/usersService');
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
-  const user = usersService.findUserByEmail(email);
+  const user = await usersService.findUserByEmail(email);
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }

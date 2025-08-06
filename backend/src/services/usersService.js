@@ -1,56 +1,72 @@
 const bcrypt = require('bcrypt');
-const users = [];
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL || 'file:./dev.db',
+    },
+  },
+});
 
 async function createUser({ name, email, phone, password }) {
-  const existingUser = findUserByEmail(email);
+  const existingUser = await findUserByEmail(email);
   if (existingUser) {
     const error = new Error('E-mail já cadastrado');
     error.status = 409;
     throw error;
   }
+
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = { name, email, phone, password: hashedPassword };
-  users.push(user);
-  const { password: _, ...userWithoutPassword } = user;
+  const user = await prisma.user.create({
+    data: { name, email, phone, password: hashedPassword },
+  });
+  const { password: _, id, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
 
-function getUsers() {
-  return users.map(({ password, ...user }) => user);
+async function getUsers() {
+  const users = await prisma.user.findMany();
+  return users.map(({ password, id, ...user }) => user);
 }
 
 function findUserByEmail(email) {
-  return users.find((u) => u.email === email);
+  return prisma.user.findUnique({ where: { email } });
 }
+
 async function updateUser(email, { name, phone, password }) {
-  const user = findUserByEmail(email);
-  if (!user) {
-    return null;
-  }
-
-  if (name !== undefined) {
-    user.name = name;
-  }
-
-  if (phone !== undefined) {
-    user.phone = phone;
-  }
-
+  const data = {};
+  if (name !== undefined) data.name = name;
+  if (phone !== undefined) data.phone = phone;
   if (password !== undefined) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    user.password = hashedPassword;
+    data.password = await bcrypt.hash(password, 10);
   }
 
-  const { password: _, ...userWithoutPassword } = user;
-  return userWithoutPassword;
+  try {
+    const updated = await prisma.user.update({
+      where: { email },
+      data,
+    });
+    const { password: _, ...userWithoutPassword } = updated;
+    return userWithoutPassword;
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return null;
+    }
+    throw error;
+  }
 }
 
 async function deleteUser(email) {
-  const index = users.findIndex((u) => u.email === email);
-  if (index === -1) {
-    return false;
+  try {
+    await prisma.user.delete({ where: { email } });
+    return true;
+  } catch (error) {
+    if (error.code === 'P2025') {
+      return false;
+    }
+    throw error;
   }
-  users.splice(index, 1);
-  return true;
 }
+
 module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser };
