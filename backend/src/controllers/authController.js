@@ -1,10 +1,18 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const usersService = require('../services/usersService');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL || 'file:./dev.db',
+    },
+  },
+});
 
 async function loginUser(req, res) {
   const { email, password } = req.body;
-  const user = await usersService.findUserByEmail(email);
+  const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }

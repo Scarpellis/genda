@@ -1,9 +1,14 @@
-const usersService = require('../services/usersService');
+const {
+  createUser: createUserService,
+  getUsers: getUsersService,
+  updateUser: updateUserService,
+  deleteUser: deleteUserService,
+} = require('../services/usersService');
 
 async function createUser(req, res) {
   const { name, email, phone, password } = req.body;
   try {
-    const user = await usersService.createUser({ name, email, phone, password });
+    const user = await createUserService({ name, email, phone, password });
     res.status(201).json(user);
   } catch (error) {
     if (error.status) {
@@ -16,7 +21,7 @@ async function createUser(req, res) {
 
 async function getUsers(req, res) {
   try {
-    const users = await usersService.getUsers();
+    const users = await getUsersService();
     res.json(users);
   } catch (error) {
     res.status(500).json({ error: 'Could not retrieve users' });
@@ -28,7 +33,7 @@ async function updateUser(req, res) {
   const { name, phone, password } = req.body;
 
   try {
-    const updated = await usersService.updateUser(email, { name, phone, password });
+    const updated = await updateUserService(email, { name, phone, password });
     if (!updated) {
       return res.status(404).json({ error: 'User not found' });
     }
@@ -42,7 +47,7 @@ async function deleteUser(req, res) {
   const { email } = req.params;
 
   try {
-    const deleted = await usersService.deleteUser(email);
+    const deleted = await deleteUserService(email);
     if (!deleted) {
       return res.status(404).json({ error: 'User not found' });
     }
