@@ -26,8 +26,6 @@ async function saveUsers() {
   }
 }
 
-loadUsers();
-
 async function createUser({ name, email, phone, password }) {
   const existingUser = findUserByEmail(email);
   if (existingUser) {
@@ -84,4 +82,4 @@ async function deleteUser(email) {
   return true;
 }
 
-module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser };
+module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser, loadUsers };
