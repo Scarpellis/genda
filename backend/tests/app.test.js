@@ -1,4 +1,4 @@
-process.env.JWT_SECRET = 'testsecret';
+require('./setup');
 
 const request = require('supertest');
 const app = require('../src/config/app');
