@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         localStorage.setItem('token', data.token);
-        showMessage(loginMessageEl, 'Login realizado com sucesso!');
+        showMessage(loginMessageEl, data.message || 'Login realizado com sucesso!');
         await loadUsers();
       } catch (err) {
         console.error('Erro na requisição de login:', err);
@@ -74,11 +74,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (!res.ok) {
-          const msg = data.error || (data.errors && data.errors[0] && data.errors[0].msg) || 'Erro no cadastro';
+          const msg =
+            data.error ||
+            (data.errors && data.errors[0] && data.errors[0].msg) ||
+            'Erro no cadastro';
           showMessage(registerMessageEl, msg, true);
           return;
         }
-        showMessage(registerMessageEl, 'Usuário cadastrado com sucesso!');
+        showMessage(registerMessageEl, data.message || 'Usuário cadastrado com sucesso!');
         registerForm.reset();
       } catch (err) {
         console.error('Erro na requisição de cadastro:', err);
@@ -93,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
     if (!token) {
       usersList.innerHTML = '';
+      redirectToLogin();
       return;
     }
     try {
@@ -100,6 +104,12 @@ document.addEventListener('DOMContentLoaded', () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       const data = await res.json();
+      if (res.status === 401) {
+        usersList.innerHTML = `<p>${data.error || 'Não autorizado'}</p>`;
+        localStorage.removeItem('token');
+        redirectToLogin();
+        return;
+      }
       if (!res.ok) {
         usersList.innerHTML = `<p>${data.error || 'Erro ao carregar usuários'}</p>`;
         return;
@@ -127,6 +137,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!element) return;
     element.textContent = msg;
     element.className = isError ? 'error' : 'success';
+  }
+
+  function redirectToLogin() {
+    const path = window.location.pathname;
+    if (!path.endsWith('index.html') && path !== '/') {
+      window.location.href = './index.html';
+    }
   }
 
   loadUsers();
