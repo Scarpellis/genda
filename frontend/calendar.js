@@ -22,6 +22,10 @@ let currentDate = new Date();
 let selectedDate = new Date();
 let appointments = [];
 
+const API_BASE_URL =
+    document.querySelector('meta[data-base-url]')?.getAttribute('data-base-url') ||
+    window.location.origin;
+
 // Dados de exemplo
 const sampleAppointments = [
     {
@@ -55,30 +59,26 @@ const sampleAppointments = [
 ];
 
 // Inicialização
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Só executa se os elementos do calendário estiverem presentes
     if (!document.getElementById('calendar')) return;
 
-    loadAppointments();
+    await loadAppointments();
     initializeCalendar();
     initializeForm();
     updateStats();
 });
 
-// Carregar agendamentos do localStorage
-function loadAppointments() {
-    const saved = localStorage.getItem('appointments');
-    if (saved) {
-        appointments = JSON.parse(saved);
-    } else {
-        appointments = sampleAppointments;
-        saveAppointments();
+// Carregar agendamentos do servidor
+async function loadAppointments() {
+    try {
+        const res = await fetch(`${API_BASE_URL}/appointments`);
+        if (res.ok) {
+            appointments = await res.json();
+        }
+    } catch (err) {
+        console.error('Erro ao carregar agendamentos:', err);
     }
-}
-
-// Salvar agendamentos no localStorage
-function saveAppointments() {
-    localStorage.setItem('appointments', JSON.stringify(appointments));
 }
 
 // Inicializar calendário
@@ -300,12 +300,10 @@ function closeModal() {
 }
 
 // Manipular envio do formulário
-function handleFormSubmit(e) {
+async function handleFormSubmit(e) {
     e.preventDefault();
-    
-    const formData = new FormData(e.target);
+
     const appointment = {
-        id: Date.now().toString(),
         date: selectedDate.toISOString().split('T')[0],
         time: document.getElementById('time').value,
         service: document.getElementById('service').value,
@@ -315,16 +313,29 @@ function handleFormSubmit(e) {
         status: document.getElementById('status').value,
         notes: document.getElementById('notes').value || undefined
     };
-    
-    appointments.push(appointment);
-    saveAppointments();
-    updateCalendar();
-    updateSelectedDate();
-    updateStats();
-    closeModal();
-    
-    // Feedback visual
-    showNotification('Agendamento criado com sucesso!');
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/appointments`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(appointment)
+        });
+        const saved = await res.json();
+        if (!res.ok) {
+            throw new Error(saved.error || 'Erro ao criar agendamento');
+        }
+        appointments.push(saved);
+        updateCalendar();
+        updateSelectedDate();
+        updateStats();
+        closeModal();
+
+        // Feedback visual
+        showNotification('Agendamento criado com sucesso!');
+    } catch (err) {
+        console.error('Falha ao salvar agendamento:', err);
+        showNotification('Erro ao criar agendamento');
+    }
 }
 
 // Atualizar estatísticas
