@@ -1,119 +1,318 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta data-base-url="">
-  <title>Cadastro - Genda</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(120deg, #27ae60, #6dd5fa);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .register-card {
-      background: #fff;
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      width: 380px;
-    }
-    h2 {
-      text-align: center;
-      margin-top: 0;
-      color: #333;
-    }
-    .input-group {
-      position: relative;
-      margin-top: 15px;
-    }
-    .input-group i {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      color: #666;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 10px 10px 10px 32px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 25px;
-      background: #27ae60;
-      border: none;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #1e8449;
-    }
-    .message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-    }
-    .message.success {
-      color: green;
-    }
-    .message.error {
-      color: red;
-    }
-    .login-link {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 14px;
-    }
-    .login-link a {
-      color: #27ae60;
-      text-decoration: none;
-    }
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta data-base-url="">
+    <title>Cadastro - Genda</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a6bff;
+            --primary-light: #6d8aff;
+            --primary-dark: #3a56cc;
+            --secondary: #00c9a7;
+            --dark: #2d3748;
+            --light: #f7fafc;
+            --gray: #e2e8f0;
+            --error: #e53e3e;
+            --success: #38a169;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%234a6bff" fill-opacity="0.03" width="50" height="50" x="0" y="0"></rect><rect fill="%234a6bff" fill-opacity="0.03" width="50" height="50" x="50" y="50"></rect></svg>');
+            background-size: 60px 60px;
+        }
+        
+        .register-container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(74, 107, 255, 0.1);
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+        
+        .brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .brand-logo {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            transition: transform 0.5s ease;
+        }
+
+        .brand-logo:hover {
+            transform: rotate(15deg) scale(1.1);
+        }
+        
+        .brand-name {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+        
+        h2 {
+            text-align: center;
+            color: var(--dark);
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+        
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+            background-color: rgba(74, 107, 255, 0.02);
+        }
+
+        input:not(:placeholder-shown):valid {
+            border-color: var(--success);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%2338a169' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px 16px;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 40px;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(74, 107, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(74, 107, 255, 0.3);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        button:hover::after {
+            transform: scale(2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .message.success {
+            background-color: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+            display: block;
+            animation: bounceIn 0.5s;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .message.error {
+            background-color: rgba(229, 62, 62, 0.1);
+            color: var(--error);
+            display: block;
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .login-link a:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 30px 20px;
+            }
+            
+            .brand-logo {
+                font-size: 2rem;
+            }
+            
+            .brand-name {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="register-card">
-    <h2>Cadastro</h2>
-    <form id="registerForm">
-      <div class="input-group">
-        <i class="fa fa-user"></i>
-        <input type="text" id="regName" name="regName" placeholder="Nome completo" required>
-      </div>
-      <div class="input-group">
-        <i class="fa fa-envelope"></i>
-        <input type="email" id="regEmail" name="regEmail" placeholder="E-mail" required>
-      </div>
-      <div class="input-group">
-        <i class="fa fa-phone"></i>
-        <input type="text" id="regPhone" name="regPhone" placeholder="Telefone" required>
-      </div>
-      <div class="input-group">
-        <i class="fa fa-lock"></i>
-        <input type="password" id="regPassword" name="regPassword" placeholder="Senha" required>
-      </div>
-      <button type="submit"><i class="fa fa-user-plus"></i> Cadastrar</button>
-    </form>
-    <div id="registerMessage" class="message"></div>
-    <p class="login-link">Já tem conta? <a href="./index.html">Faça login</a></p>
-  </div>
-  <script type="module" src="./scripts.js"></script>
+
+    <div class="register-container">
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="brand-name">Genda</div>
+        </div>
+        
+        <h2>Crie sua conta</h2>
+        
+        <form id="registerForm">
+            <div class="input-group">
+                <label for="regName">Nome completo</label>
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="regName" name="regName" placeholder="Digite seu nome completo" required>
+            </div>
+
+            <div class="input-group">
+                <label for="regEmail">E-mail</label>
+                <i class="fas fa-envelope input-icon"></i>
+                <input type="email" id="regEmail" name="regEmail" placeholder="seu@email.com" required>
+            </div>
+
+            <div class="input-group">
+                <label for="regPhone">Telefone</label>
+                <i class="fas fa-phone input-icon"></i>
+                <input type="text" id="regPhone" name="regPhone" placeholder="(00) 00000-0000" required>
+            </div>
+
+            <div class="input-group">
+                <label for="regPassword">Senha</label>
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" id="regPassword" name="regPassword" placeholder="Crie uma senha segura" required>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-user-plus" style="margin-right: 8px;"></i>
+                Criar conta
+            </button>
+        </form>
+
+        <div id="registerMessage" class="message"></div>
+        
+        <div class="login-link">
+            Já tem uma conta? <a href="./index.html">Acesse agora</a>
+        </div>
+    </div>
+
+    <script type="module" src="./scripts.js"></script>
+
 </body>
 </html>
