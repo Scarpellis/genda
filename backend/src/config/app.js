@@ -8,8 +8,4 @@ app.use('/users', usersRouter);
 const authRouter = require('../routes/authRoutes');
 app.use(authRouter);
 
-app.get('/', (req, res) => {
-  res.send('API do Genda funcionando!');
-});
-
 module.exports = app;
