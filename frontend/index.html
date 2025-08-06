@@ -1,110 +1,382 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta data-base-url="">
-    <title>Genda Login- Sistema de Serviços</title>
-    <style>
-        body{
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(120deg, #2980b9, #6dd5fa);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container{
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
-            width: 320px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Genda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --primary: #4a6bff;
+      --primary-light: #6d8aff;
+      --primary-dark: #3a56cc;
+      --secondary: #00c9a7;
+      --dark: #2d3748;
+      --light: #f7fafc;
+      --gray: #e2e8f0;
+      --error: #e53e3e;
+      --success: #38a169;
+    }
 
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-            color: #555;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%234a6bff" fill-opacity="0.03" width="50" height="50" x="0" y="0"></rect><rect fill="%234a6bff" fill-opacity="0.03" width="50" height="50" x="50" y="50"></rect></svg>');
+      background-size: 60px 60px;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #2980b9;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
+    .login-container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(74, 107, 255, 0.1);
+      width: 100%;
+      max-width: 450px;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
 
-        button:hover {
-            background: #21618c;
-        }
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
 
-        .type-info {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #555;
-            text-align: center;
-        }
-        .register-link {
-            display: block;
-            margin-top: 15px;
-            text-align: center;
-            color: #2980b9;
-            text-decoration: none;
-        }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        .register-link:hover {
-            text-decoration: underline;
-        }
-    </style>
+    .brand {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .brand-logo {
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      transition: transform 0.5s ease;
+    }
+
+    .brand-logo:hover {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    .brand-name {
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--dark);
+      margin-bottom: 30px;
+      font-weight: 600;
+      font-size: 1.4rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group.invalid input,
+    .input-group.invalid select {
+      border-color: var(--error);
+      background-color: rgba(229, 62, 62, 0.05);
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .input-group.invalid .error-message {
+      display: block;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 38px;
+      color: var(--primary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      padding: 10px;
+      z-index: 2;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--dark);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 45px 12px 40px;
+      border: 2px solid var(--gray);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 107, 255, 0.2);
+      background-color: rgba(74, 107, 255, 0.02);
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 40px;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .forgot-password {
+      display: block;
+      text-align: right;
+      margin: 5px 0 15px;
+      font-size: 0.85rem;
+    }
+
+    .forgot-password a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .forgot-password a:hover {
+      text-decoration: underline;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 5px;
+      font-size: 1.05rem;
+      background: var(--primary);
+      border: none;
+      color: white;
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(74, 107, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(74, 107, 255, 0.3);
+    }
+
+    button::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 70%);
+      transform: scale(0);
+      transition: transform 0.5s ease;
+    }
+
+    button:hover::after {
+      transform: scale(2);
+    }
+
+    button.loading {
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    button.loading::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+      animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 20px;
+      color: var(--dark);
+      font-size: 0.9rem;
+    }
+
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .login-link a:hover {
+      color: var(--primary-dark);
+      text-decoration: underline;
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
+
+      .brand-logo {
+        font-size: 2rem;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <label for="tipoUsuario">Tipo de usuário:</label>
-            <select id="tipoUsuario" name="tipoUsuario">
-                <option value="prestador">Prestador de Serviço</option>
-                <option value="contratante">Contratante</option>
-            </select>
-
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" name="email" placeholder="Digite seu e-mail" required>
-
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
-
-            <button type="submit">Entrar</button>
-        </form>
-        <a href="cadastro.html" class="register-link">Não tem conta? Cadastre-se</a>
-        <div class="type-info" id="infoTipo"></div>
-        <div id="loginMessage"></div>
-        <div id="usersList"></div>
+  <div class="login-container">
+    <div class="brand">
+      <div class="brand-logo"><i class="fas fa-calendar-alt"></i></div>
+      <div class="brand-name">Genda</div>
     </div>
 
-    <script type="module" src="./scripts.js"></script>
+    <h2>Entrar na sua conta</h2>
 
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="tipoUsuario">Tipo de usuário</label>
+        <i class="fas fa-user-tag input-icon"></i>
+        <select id="tipoUsuario" name="tipoUsuario">
+          <option value="prestador">Prestador de Serviço</option>
+          <option value="contratante">Contratante</option>
+        </select>
+      </div>
+
+      <div class="input-group">
+        <label for="email">E-mail</label>
+        <i class="fas fa-envelope input-icon"></i>
+        <input type="email" id="email" name="email" placeholder="seu@email.com" required />
+      </div>
+
+      <div class="input-group">
+        <label for="senha">Senha</label>
+        <i class="fas fa-lock input-icon"></i>
+        <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required />
+        <span class="password-toggle" id="togglePassword" role="button" aria-label="Mostrar senha">
+          <i class="fas fa-eye"></i>
+        </span>
+        <div class="error-message">Por favor, insira uma senha válida</div>
+      </div>
+
+      <div class="forgot-password">
+        <a href="#">Esqueci minha senha</a>
+      </div>
+
+      <button type="submit">
+        <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> Entrar
+      </button>
+    </form>
+
+    <div class="login-link">
+      Não tem conta? <a href="./cadastro.html">Cadastre-se</a>
+    </div>
+  </div>
+
+  <script>
+    // Toggle password visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('senha');
+    
+    togglePassword.addEventListener('click', function() {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.innerHTML = type === 'password' ? '<i class="fas fa-eye"></i>' : '<i class="fas fa-eye-slash"></i>';
+    });
+
+    // Form validation
+    const form = document.getElementById('loginForm');
+    const passwordGroup = form.querySelector('.input-group');
+    
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const submitButton = form.querySelector('button[type="submit"]');
+      const originalContent = submitButton.innerHTML;
+      
+      // Show loading state
+      submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
+      submitButton.disabled = true;
+      
+      // Simulate API call
+      setTimeout(() => {
+        // Show error state
+        passwordGroup.classList.add('invalid');
+        submitButton.innerHTML = originalContent;
+        submitButton.disabled = false;
+        
+        // Remove error after 3 seconds
+        setTimeout(() => {
+          passwordGroup.classList.remove('invalid');
+        }, 3000);
+      }, 1500);
+    });
+  </script>
+  <script type="module" src="./scripts.js"></script>
 </body>
 </html>
