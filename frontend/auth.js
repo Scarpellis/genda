@@ -7,7 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const tipoSelect = document.getElementById('tipoUsuario');
   const infoDiv = document.getElementById('infoTipo');
 
-  const API_BASE_URL = window.location.origin;
+  const API_BASE_URL =
+    document.querySelector('meta[data-base-url]')?.getAttribute('data-base-url') ||
+    window.location.origin;
 
   // Atualiza a mensagem do tipo de usuário
   if (tipoSelect && infoDiv) {
