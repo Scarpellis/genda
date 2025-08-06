@@ -1,100 +1,119 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta data-base-url="">
-    <title>Cadastro - Sistema de Serviços</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(120deg, #27ae60, #6dd5fa);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .register-container {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
-            width: 350px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 15px;
-            color: #555;
-        }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #27ae60;
-            border: none;
-            color: #fff;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background: #1e8449;
-        }
-        .message {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
-        .message.success {
-            color: green;
-        }
-        .message.error {
-            color: red;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta data-base-url="">
+  <title>Cadastro - Genda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(120deg, #27ae60, #6dd5fa);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .register-card {
+      background: #fff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      width: 380px;
+    }
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      color: #333;
+    }
+    .input-group {
+      position: relative;
+      margin-top: 15px;
+    }
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      color: #666;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 10px 10px 10px 32px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 25px;
+      background: #27ae60;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #1e8449;
+    }
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .message.success {
+      color: green;
+    }
+    .message.error {
+      color: red;
+    }
+    .login-link {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .login-link a {
+      color: #27ae60;
+      text-decoration: none;
+    }
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="register-container">
-        <h2>Cadastro</h2>
-        <form id="registerForm">
-            <label for="regName">Nome:</label>
-            <input type="text" id="regName" name="regName" placeholder="Digite seu nome" required>
-
-            <label for="regEmail">E-mail:</label>
-            <input type="email" id="regEmail" name="regEmail" placeholder="Digite seu e-mail" required>
-
-            <label for="regPhone">Telefone:</label>
-            <input type="text" id="regPhone" name="regPhone" placeholder="Digite seu telefone" required>
-
-            <label for="regPassword">Senha:</label>
-            <input type="password" id="regPassword" name="regPassword" placeholder="Digite sua senha" required>
-
-            <button type="submit">Cadastrar</button>
-        </form>
-
-        <div id="registerMessage" class="message"></div>
-        <p style="text-align: center; margin-top: 10px;">
-            Já tem conta? <a href="./index.html">Faça login</a>
-        </p>
-    </div>
-
-    <script type="module" src="./scripts.js"></script>
-
+  <div class="register-card">
+    <h2>Cadastro</h2>
+    <form id="registerForm">
+      <div class="input-group">
+        <i class="fa fa-user"></i>
+        <input type="text" id="regName" name="regName" placeholder="Nome completo" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-envelope"></i>
+        <input type="email" id="regEmail" name="regEmail" placeholder="E-mail" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-phone"></i>
+        <input type="text" id="regPhone" name="regPhone" placeholder="Telefone" required>
+      </div>
+      <div class="input-group">
+        <i class="fa fa-lock"></i>
+        <input type="password" id="regPassword" name="regPassword" placeholder="Senha" required>
+      </div>
+      <button type="submit"><i class="fa fa-user-plus"></i> Cadastrar</button>
+    </form>
+    <div id="registerMessage" class="message"></div>
+    <p class="login-link">Já tem conta? <a href="./index.html">Faça login</a></p>
+  </div>
+  <script type="module" src="./scripts.js"></script>
 </body>
 </html>
