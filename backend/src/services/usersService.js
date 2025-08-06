@@ -1,30 +1,5 @@
-const fs = require('fs').promises;
-const path = require('path');
 const bcrypt = require('bcrypt');
-
-const USERS_FILE = path.join(__dirname, '..', 'data', 'users.json');
-
-let users = [];
-
-async function loadUsers() {
-  try {
-    const data = await fs.readFile(USERS_FILE, 'utf-8');
-    users = JSON.parse(data);
-  } catch (error) {
-    if (error.code !== 'ENOENT') {
-      console.error('Failed to load users:', error);
-    }
-  }
-}
-
-async function saveUsers() {
-  try {
-    await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-  } catch (error) {
-    console.error('Failed to save users:', error);
-    throw error;
-  }
-}
+const users = [];
 
 async function createUser({ name, email, phone, password }) {
   const existingUser = findUserByEmail(email);
@@ -36,7 +11,6 @@ async function createUser({ name, email, phone, password }) {
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = { name, email, phone, password: hashedPassword };
   users.push(user);
-  await saveUsers();
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
@@ -67,7 +41,6 @@ async function updateUser(email, { name, phone, password }) {
     user.password = hashedPassword;
   }
 
-  await saveUsers();
   const { password: _, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
@@ -78,8 +51,6 @@ async function deleteUser(email) {
     return false;
   }
   users.splice(index, 1);
-  await saveUsers();
   return true;
 }
-
-module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser, loadUsers };
+module.exports = { createUser, getUsers, findUserByEmail, updateUser, deleteUser };

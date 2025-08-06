@@ -1,16 +1,3 @@
-const mockUsers = [];
-
-jest.mock('fs', () => ({
-  ...jest.requireActual('fs'),
-  promises: {
-    readFile: jest.fn(async () => JSON.stringify(mockUsers)),
-    writeFile: jest.fn(async (_file, data) => {
-      mockUsers.length = 0;
-      mockUsers.push(...JSON.parse(data));
-    }),
-  },
-}));
-
 process.env.JWT_SECRET = 'testsecret';
 
 const request = require('supertest');
