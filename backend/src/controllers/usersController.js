@@ -14,9 +14,13 @@ async function createUser(req, res) {
   }
 }
 
-function getUsers(req, res) {
-  const users = usersService.getUsers();
-  res.json(users);
+async function getUsers(req, res) {
+  try {
+    const users = await usersService.getUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: 'Could not retrieve users' });
+  }
 }
 
 async function updateUser(req, res) {
