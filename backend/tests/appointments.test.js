@@ -1,23 +1,15 @@
-const mockUsers = [];
 const mockAppointments = [];
 
 jest.mock('fs', () => ({
   ...jest.requireActual('fs'),
   promises: {
     readFile: jest.fn(async (file) => {
-      if (file.includes('users.json')) {
-        return JSON.stringify(mockUsers);
-      }
       if (file.includes('appointments.json')) {
         return JSON.stringify(mockAppointments);
       }
       return '[]';
     }),
     writeFile: jest.fn(async (file, data) => {
-      if (file.includes('users.json')) {
-        mockUsers.length = 0;
-        mockUsers.push(...JSON.parse(data));
-      }
       if (file.includes('appointments.json')) {
         mockAppointments.length = 0;
         mockAppointments.push(...JSON.parse(data));
