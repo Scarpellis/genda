@@ -4,15 +4,15 @@ const router = express.Router();
 const { createUser, getUsers, updateUser, deleteUser } = require('../controllers/usersController');
 const authMiddleware = require('../middleware/authMiddleware');
 
-function handleValidationErrors(req, res, next) {
+const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   next();
-}
+};
 
-const validateUser = [
+const validateCreateUser = [
   body('name').notEmpty().withMessage('Name is required'),
   body('email').isEmail().withMessage('Valid email is required'),
   body('phone').notEmpty().withMessage('Phone is required'),
@@ -27,7 +27,7 @@ const validateUpdateUser = [
   handleValidationErrors,
 ];
 
-router.post('/', validateUser, createUser);
+router.post('/', validateCreateUser, createUser);
 router.get('/', authMiddleware, getUsers);
 router.put('/:email', authMiddleware, validateUpdateUser, updateUser);
 router.delete('/:email', authMiddleware, deleteUser);
